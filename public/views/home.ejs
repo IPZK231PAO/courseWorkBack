@@ -1,0 +1,73 @@
+<section class="home">
+	<h2>Welcome <%= username %></h2>
+	<p>Here you can listen your favourite music</p>
+	<h2>Пісні дня для вас</h2>
+	<ul>
+		<% songs.forEach((song) => { %>
+		<li>
+			<div>
+				<h3>
+					Title:<br />
+					<%= song.title %>
+				</h3>
+				<p>
+					Artist:<br />
+					<%= song.artist %>
+				</p>
+			</div>
+			<audio controls>
+				<source src="./<%= song.filePath %>" type="audio/mpeg" />
+				Your browser does not support the audio tag.
+			</audio>
+		</li>
+		<% }); %>
+	</ul>
+	<div>
+		<p>Завітайте в Бібліотеку</p>
+		<a class="link" href="<%= links.find(link=>link.url==='/library').url %>"
+			>Бібліотека</a
+		>
+	</div>
+</section>
+<script>
+	function addListened(username, songName) {
+		console.log('ADD LISTENED CLIENT:', username, songName)
+		const data = {
+			username: username,
+			songName: songName
+		}
+		fetch('/addListened', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => {
+				console.log(response)
+				if (!response.ok) {
+					throw new Error('Failed to add song to history')
+				}
+				return response.json()
+			})
+			.then(data => {
+				console.log(data)
+			})
+			.catch(error => {
+				console.error('Error adding song to history: ', error)
+			})
+	}
+	document.addEventListener('DOMContentLoaded', () => {
+		let audios = document.querySelectorAll('audio')
+
+		audios.forEach(audio => {
+			audio.addEventListener('play', () => {
+				const songName = '<%= song.title %>'
+
+				const username = '<%= username %>'
+				console.log(username, ' ', songName)
+				addListened(username, songName)
+			})
+		})
+	})
+</script>

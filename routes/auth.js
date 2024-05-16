@@ -1,0 +1,10 @@
+const express = require('express')
+const router = express.Router()
+const pageController = require('../controllers/PageController')
+const userController = require('../controllers/UserController')
+router.get('/register', pageController.register)
+router.post('/register', userController.registration)
+router.get('/login', pageController.login)
+router.post('/login', userController.login)
+router.get('/logout', userController.logout)
+module.exports = router

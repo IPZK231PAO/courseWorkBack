@@ -1,0 +1,37 @@
+<section class="profile">
+	<div class="profile__avatar"><%= user.username[0] %></div>
+	<div>
+		<h2>Ім'я користувача: <%= user.username %></h2>
+		<button>Змінити</button>
+	</div>
+	<div>
+		<h2>Ел. пошта: <%= user.email %></h2>
+		<button>Змінити</button>
+	</div>
+	<div>
+		<h2 class="profile__password">
+			Піроль: <%= user.password.substring(0,10).replace(/./g, '*') %>
+		</h2>
+		<button>Змінити</button>
+	</div>
+	<div>
+		<a class="link" href="<%= links.find(link=>link.url==='/logout').url %>"
+			>Logout</a
+		>
+	</div>
+</section>
+<script>
+	const avatar = document.querySelector('.profile__avatar')
+
+	const getRandomColor = () => {
+		const red = Math.floor(Math.random() * 256)
+		const green = Math.floor(Math.random() * 256)
+		const blue = Math.floor(Math.random() * 256)
+		return `rgb(${red},${green},${blue})`
+	}
+
+	const randomColor = getRandomColor()
+	avatar.style.backgroundColor = randomColor
+
+	//
+</script>

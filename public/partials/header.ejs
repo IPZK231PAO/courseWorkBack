@@ -1,0 +1,11 @@
+<header>
+	<nav>
+		<% links.map((link) => {%>
+		<a
+			class="link <%=link.title.toLowerCase().replace(' ','')%>"
+			href="<%= link.url %>"
+			><%= link.title %></a
+		>
+		<% }); %>
+	</nav>
+</header>

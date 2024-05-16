@@ -1,0 +1,22 @@
+.home ul {
+	display: flex;
+	gap: 20px;
+	justify-content: space-evenly;
+	text-align: center;
+	list-style: none;
+	margin: 0 auto;
+	padding: 5vh 0;
+	margin-bottom: 15vh;
+}
+.home ul li div {
+	height: 100%;
+}
+
+.home div {
+	text-align: center;
+}
+.home a {
+	padding: 1vh 1vw;
+	border: 2px solid black;
+	border-radius: 10px;
+}

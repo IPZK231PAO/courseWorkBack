@@ -1,0 +1,33 @@
+@import url('../styles/header.css');
+@import url('../styles/profile.css');
+@import url('../styles/home.css');
+
+html,
+body,
+section {
+	margin: 0;
+	padding: 0;
+}
+html {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 100%;
+}
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+a.link {
+	display: inline-block;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 0.5em;
+	text-decoration: none;
+	color: black;
+	font-size: 20px;
+}
+a:visited {
+	color: navy;
+}
+a:hover {
+	color: orange;
+}

@@ -1,0 +1,15 @@
+header {
+	display: flex;
+	position: relative;
+	gap: 5%;
+	padding: 2vh;
+}
+
+header a.admindashboard {
+	color: crimson;
+	position: absolute;
+	right: 2vw;
+}
+header a.admindashboard:hover {
+	transform: scale(1.05);
+}
