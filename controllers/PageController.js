@@ -1,8 +1,7 @@
 const filesController = require('./FilesController')
 const songController = require('./SongController')
 const userController = require('./UserController')
-const fs = require('fs')
-const path = require('path')
+const playlistController = require('./PlaylistController')
 const generateLinks = (authenticated, role) => {
 	let links = [
 		{ url: '/', title: 'Home' },
@@ -12,6 +11,7 @@ const generateLinks = (authenticated, role) => {
 		{ url: '/login', title: 'Login' },
 		{ url: '/profile', title: 'Profile' },
 		{ url: '/history', title: 'History' },
+		{ url: '/playlists', title: 'Playlists' },
 		{ url: '/logout', title: 'Logout' }
 	]
 
@@ -32,24 +32,59 @@ const generateLinks = (authenticated, role) => {
 			'/upload',
 			'/logout',
 			'/profile',
-			'/history'
+			'/history',
+			'/playlists'
 		]
 		links = links.filter(link => !hiddenLinks.includes(link.url))
 	}
 
 	return links
 }
+exports.admin=async(req,res)=>{
+	role = req.user.role
+	const links =  generateLinks(true, role)
+	const {users}= await userController.getAllUsers()
+	const songs=await songController.getAllSongs()
+	const playlists = await playlistController.getAllPlaylists()
+	res.render('main', {
+		links,
+		playlists,
+		users, 
+		songs,
+		title: 'Admin Dashboard',
+		content: 'admin'
+	})
+}
 
+exports.playlists = async (req, res) => {
+	role = req.user.role
+	id=req.user.id
+	console.log('PAGE CONTROLLER ID ', id)
+	const playlists = await playlistController.getAllPlaylistsById(id)
+	const links = generateLinks(true, role)
+	const songs = await songController.getAllSongs()
+	console.log(playlists)
+	res.render('main', {
+		links,
+		id:id,
+		playlists,
+		allSongs: songs,
+		title: 'Playlists',
+		content: 'playlists'
+	})
+}
 exports.history = async (req, res) => {
 	const role = req.user.role
 	const username = req.user.username
 	console.log(username)
 	const links = generateLinks(true, role)
 	const { history } = await userController.getListened(username)
-
+	const songs = await songController.getAllSongs()
 	res.render('main', {
 		links,
 		history,
+		songs,
+		username: { username: req.user.username },
 		title: `Історія прослуховувань користувача ${username}`,
 		content: 'history'
 	})

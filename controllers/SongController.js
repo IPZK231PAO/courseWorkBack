@@ -59,7 +59,9 @@ exports.processNewSong = async (req, res) => {
 	try {
 		console.log('STARTED TO PROCESS NEW SONG', req.file.originalname)
 		const { originalname } = req.file
-		const path = `/music/${req.file.originalname}`
+		
+		const path = `./public/music/${originalname}`
+		const relativePath = `/music/${originalname}`
 		console.log('PROCESSING NEW SONG: ', originalname)
 		const metadata = await mm.parseFile(path)
 		console.log(`METADATA OF NEW SONG: SUCCESS`)
@@ -67,7 +69,7 @@ exports.processNewSong = async (req, res) => {
 		if (existingSong) {
 			return res.json({ success: false, message: 'Song already exists' })
 		}
-		const song = await createSong(metadata, originalname, path)
+		const song = await createSong(metadata, originalname, relativePath)
 		if (song) {
 			await saveSong(song)
 		}

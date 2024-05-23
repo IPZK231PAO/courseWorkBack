@@ -16,6 +16,8 @@ const uploadRoutes = require('./routes/upload')
 const songsRoutes = require('./routes/songs')
 const authRoutes = require('./routes/auth')
 const listenHistoryRoutes = require('./routes/listenHistory')
+const playlistRoutes = require('./routes/playlist')
+const adminRoutes=require('./routes/admin')
 
 // *Parser
 const cookieParser = require('cookie-parser')
@@ -31,12 +33,16 @@ app.use('/music', express.static(path.join(__dirname, 'public', 'music')))
 
 app.use(express.static('public'))
 
+// *Using routes
+
 app.use(homeRoute)
 app.use(uploadRoutes)
 app.use(songsRoutes)
 app.use(authRoutes)
 app.use(profileRoute)
 app.use(listenHistoryRoutes)
+app.use(playlistRoutes)
+app.use(adminRoutes)
 const start = () => {
 	try {
 		app.listen(PORT, error => {

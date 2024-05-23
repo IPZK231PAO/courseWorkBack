@@ -1,0 +1,60 @@
+<h2>Admin Dashboard</h2>
+
+<h3>Список пісень</h3>
+<ul id="AdminSongList">
+	<% songs.forEach(song => { %>
+	<li class="AdminSongList-item">
+		<h3 class="AdminSongList-title">Title: <%= song.title %></h3>
+        <p class="AdminSongList-ID"><b>ID: <%= song._id %></b></p>
+		<p class="AdminSongList-artist">Artist: <%= song.artist %></p>
+		<p class="AdminSongList-album">Album: <%= song.album %></p>
+		<p class="AdminSongList-duration">Duration: <%= song.duration %> minutes</p>
+		<audio controls name="<%= song.title %>">
+			<source src="<%= song.filePath %>" type="audio/mpeg" />
+			Your browser does not support the audio tag.
+		</audio>
+		<a href="./music/<%= song.filename %>" download="<%= song.filename %>">Завантажити</a>
+	</li>
+	<% }); %>
+</ul>
+
+<h3>Список користувачів</h3>
+<ul id="AdminUsersList">
+	<% users.forEach(user => { %>
+	<li class="AdminUsersList-item">
+		<h3 class="AdminUsersList-username">Username: <%= user.username %></h3>
+		<p class="AdminUsersList-ID"><b>ID: <%= user._id %></b></p>
+        <p class="AdminUsersList-email">Email: <%= user.email %></p>
+		<p class="AdminUsersList-password">Password: <%= user.password %></p>
+		<ul class="AdminUsersList-listened">
+            <p><b>Song history list: </b></p>
+            <% user.listened.forEach(listen => { %>
+                <li>Song Title: <%= listen %></li>
+            <% }); %>
+        </ul>
+		<p>Role: <%= user.role %></p>
+	</li>
+	<% }); %>
+</ul>
+
+<h3>Список плейлистів</h3>
+<ul id="AdminPlaylistsList">
+	<% playlists.forEach(playlist => { %>
+	<li class="AdminPlaylistsList-item">
+		<h3 class="AdminPlaylistsList-title">Title: <%= playlist.title %></h3> <!-- Fixed typo -->
+        <p class="AdminPlaylistsList-ID"><b>ID: <%= playlist._id %></b></p>
+        <p><b>Songs:</b></p>
+        <ul>
+            <% playlist.songs.forEach(song => { %>
+                <p class="AdminSongList-ID"><b>ID: <%= song._id %></b></p>
+		<p class="AdminSongList-artist">Artist: <%= song.artist %></p>
+		<p class="AdminSongList-album">Album: <%= song.album %></p>
+		<p class="AdminSongList-duration">Duration: <%= song.duration %> minutes</p>
+            <% }); %>
+        </ul>
+		<p class="AdminPlaylistsList-createdAt">createdAt: <%= playlist.createdAt %></p>
+		<p class="AdminPlaylistsList-updatedAt">updatedAt: <%= playlist.updatedAt %></p>
+		<p class="AdminPlaylistsList-createdBy">createdBy: <%= playlist.createdBy %></p>
+	</li>
+	<% }); %>
+</ul>

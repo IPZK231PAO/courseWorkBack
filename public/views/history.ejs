@@ -1,5 +1,15 @@
-<% history.map(song => { %>
-<li>
-	<h3>Title: <%= song %></h3>
-</li>
-<% }); %>
+<%- include('../partials/search') %>
+<ul id="songList">
+	<% history.forEach(title => { %> <% songs.forEach(song => { %> <% if (title
+	=== song.title) { %>
+	<li class="song-item">
+		<h3 class="title">Title: <%= song.title %></h3>
+		<p class="artist">Artist: <%= song.artist %></p>
+		
+		<audio controls name="<%= song.title %>">
+			<source src="<%= song.filePath %>" type="audio/mpeg" />
+			Your browser does not support the audio tag.
+		</audio>
+	</li>
+	<% } %> <% }) %> <% }) %>
+</ul>

@@ -127,8 +127,6 @@ exports.checkExistingUser = async ({ email }) => {
 		throw error
 	}
 }
-// ! LISTENING HISTORY
-// ? IN PROGRESS
 exports.addListened = async (req, res) => {
 	try {
 		const { username, songName } = req.body
@@ -163,11 +161,27 @@ exports.getListened = async username => {
 
 		console.log(`GET LISTENED USER: ${user.username}`)
 		if (!user) {
-			return res.status(404).json({ success: false, message: 'Cant get user' })
+			return { success: false, message: 'Cant get user' }
 		}
 		return { success: true, history: user.listened }
 	} catch (error) {
 		console.error('Error fetching listened: ' + error)
 		return { success: false, message: 'Getting listening history failed' }
+	}
+}
+
+exports.getAllUsers=async()=>{
+	try{
+		console.log('GETTING ALL USERS')
+		const users = await User.find()
+		if(!users){
+			console.error('USERS DID NOT FOUND')
+			return {success:false, message:'Користувачів не знайдено'}
+		}
+		console.log('ALL USERS FOUND SUCCESSFULLY: ', users)
+		return {success:true, message:'Користувачів знайдено', users:users}
+	}catch(error){
+		console.error('GETTING ALL USERS FAILED: ', error)
+		return {success:false, message:'Внутрішня помилка серверу', error:error}
 	}
 }

@@ -1,5 +1,38 @@
 <h2>All songs</h2>
-<ul>
+<%- include('../partials/search') %>
+<ul id="songList">
+	<% songs.forEach(song => { %>
+	<li class="song-item">
+		<h3 class="title">Title: <%= song.title %></h3>
+		<p class="artist">Artist: <%= song.artist %></p>
+		<p class="album">Album: <%= song.album %></p>
+		<p class="duration">Duration: <%= song.duration %> minutes</p>
+		<audio controls name="<%= song.title %>">
+			<source src="<%= song.filePath %>" type="audio/mpeg" />
+			Your browser does not support the audio tag.
+		</audio>
+		<a href="./music/<%= song.filename %>" download="<%= song.filename %>"
+			>Завантажити</a
+		>
+	</li>
+	<% }); %>
+</ul>
+<script>
+	
+</script>
+
+<!-- <h2>All songs</h2>
+<div>
+	<label for="searchInput">Search:</label>
+	<input
+		type="text"
+		id="searchInput"
+		oninput="searchSongs()"
+		placeholder="Enter song title"
+	/>
+</div>
+
+<ul id="songList">
 	<% songs.forEach(song => { %>
 	<li>
 		<h3>Title: <%= song.title %></h3>
@@ -7,15 +40,16 @@
 		<p>Album: <%= song.album %></p>
 		<p>Duration: <%= song.duration %> minutes</p>
 		<audio controls name="<%= song.title %>">
-			<source src="./<%= song.filePath %>" type="audio/mpeg" />
+			<source src="<%= song.filePath %>" type="audio/mpeg" />
 			Your browser does not support the audio tag.
 		</audio>
 		<a href="./music/<%= song.filename %>" download="<%= song.filename %>"
-			>Завантажити пісню</a
+			>Download song</a
 		>
 	</li>
 	<% }); %>
 </ul>
+
 <script>
 	function addListened(username, songName) {
 		console.log('ADD LISTENED CLIENT:', username, songName)
@@ -44,6 +78,22 @@
 				console.error('Error adding song to history: ', error)
 			})
 	}
+
+	function searchSongs() {
+		const input = document.getElementById('searchInput')
+		const filter = input.value.toLowerCase()
+		const songs = document.querySelectorAll('#songList li')
+
+		songs.forEach(song => {
+			const title = song.querySelector('h3').innerText.toLowerCase()
+			if (title.includes(filter)) {
+				song.style.display = 'block'
+			} else {
+				song.style.display = 'none'
+			}
+		})
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		let audios = document.querySelectorAll('audio')
 
@@ -58,4 +108,4 @@
 			})
 		})
 	})
-</script>
+</script> -->
