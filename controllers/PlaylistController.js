@@ -74,68 +74,91 @@ exports.getAllPlaylists = async () => {
 }
 
 exports.updatePlaylist = async (req, res) => {
-	try {
-		const {id, title, songs} = req.body
-		const playlist = await Playlist.findByIdAndUpdate(
-			id,
-			{ title, songs, updatedAt: Date.now() },
-			{ new: true }
-		)
-		if (!playlist) {
-			return res
-				.status(404)
-				.json({ success: false, message: 'Плейлист не знайдено' })
-		}
-		res.json({ success: true, message: 'Плейліст оновлено', playlist })
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: 'Помилка оновлення плейлісту',
-			error: error
-		})
-	}
+    try {
+        console.log('UPDATING PLAYLIST')
+        const updates = req.body
+        console.log(req.body)
+
+        const playlist = await Playlist.findByIdAndUpdate(
+            req.params.id,
+            { ...updates, updatedAt: Date.now() },
+            { new: true }
+        ).populate('songs')
+        
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: 'Плейлист не знайдено' })
+        }
+        res.json({ success: true, message: 'Плейліст оновлено', playlist })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Помилка оновлення плейлісту',
+            error: error.message
+        })
+    }
 }
+
 
 exports.deletePlaylist = async (req, res) => {
-	try {
-		const playlist = await Playlist.findByIdAndDelete(req.params.id)
-		if (!playlist) {
-			return res
-				.status(404)
-				.json({ success: false, message: 'Плейлист не знайдено' })
-		}
-		res.json({ success: true, message: 'Плейліст видалено' })
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: 'Помилка видалення плейлісту',
-			error: error
-		})
-	}
-}
+    try {
+        const playlist = await Playlist.findByIdAndDelete(req.params.id);
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: 'Плейлист не знайдено' });
+        }
+        res.json({ success: true, message: 'Плейліст видалено' });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Помилка видалення плейлісту',
+            error: error.message
+        });
+    }
+};
+
 exports.addSongsToPlaylist = async (req, res) => {
-	try {
-		console.log('ADD SONGS TO PLAYLIST')
-		const { playlistId, songIds } = req.body
-		console.log('Add songs to playlist data: ', playlistId, songIds)
-		const playlist = await Playlist.findByIdAndUpdate(
-			playlistId,
-			{ $addToSet: { songs: { $each: songIds } } },
-			{ new: true }
-		).populate('songs')
-
-		if (!playlist) {
-			return res
-				.status(404)
-				.json({ success: false, message: 'Плейлист не знайдено' })
-		}
-
-		res.json({ success: true, message: 'Пісні додано до плейлісту', playlist })
-	} catch (error) {
-		res.status(500).json({
-			success: false,
-			message: 'Помилка додавання пісень до плейлісту',
-			error: error.message
-		})
-	}
-}
+    try {
+		console.log('ADDING SONGS TO PLAYLIST')
+        const { playlistId, songs } = req.body;
+		console.log(req.body)
+        const playlist = await Playlist.findByIdAndUpdate(
+            playlistId,
+            { $addToSet: { songs: { $each: songs } } },
+            { new: true }
+        ).populate('songs');
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: 'Плейлист не знайдено' });
+        }
+        res.json({ success: true, message: 'Пісні додано до плейлісту', playlist });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Помилка додавання пісень до плейлісту',
+            error: error.message
+        });
+    }
+};
+exports.removeSongFromPlaylist = async (req, res) => {
+    try {
+		console.log('REMOVING SONG')
+        const { playlistId, songId } = req.body;
+		console.log({playlistId, songId})
+		
+        const playlist = await Playlist.findByIdAndUpdate(
+            playlistId,
+            { $pull: { songs: songId } },
+            { new: true }
+        ).populate('songs');
+        
+        if (!playlist) {
+            return res.status(404).json({ success: false, message: 'Плейлист не знайдено' });
+        }
+		console.log('SONG REMOVED: ', playlist)
+        res.status(201).json({ success: true, message: 'Пісню видалено з плейлісту', playlist });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Помилка видалення пісні з плейлісту',
+            error: error.message
+        });
+    }
+};

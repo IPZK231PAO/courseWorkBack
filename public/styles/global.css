@@ -1,33 +1,108 @@
-@import url('../styles/header.css');
-@import url('../styles/profile.css');
-@import url('../styles/home.css');
-
-html,
-body,
-section {
-	margin: 0;
-	padding: 0;
-}
-html {
-	box-sizing: border-box;
-	width: 100%;
-	min-height: 100%;
-}
+@import url('./header.css');
+@import url('./profile.css');
+@import url('./home.css');
+@import url('./playlists.css');
+@import url('./admin.css');
+@import url('./auth.css');
+@import url('./nullstyles.css');
+@import url('./library.css');
+@import url('./upload.css');
+@import url('./history.css');
 body {
-	font-family: Arial, Helvetica, sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: rgb(159, 72, 230);
+    background-image: linear-gradient(180deg,
+     rgb(68, 0, 86) 0%,
+     rgb(0, 36, 29) 80%,
+     rgb(3, 58, 48) 100%);
+     font-size: 20px;
+     color: rgb(67, 224, 187);
+     background-repeat: no-repeat;
+     background-size: cover;
+    
 }
-a.link {
-	display: inline-block;
-	border: 2px solid black;
-	border-radius: 10px;
-	padding: 0.5em;
-	text-decoration: none;
-	color: black;
-	font-size: 20px;
+button {
+    border-radius: 1rem;
+    background-color: #086f5c46;
+	padding: 0.8rem 1.6rem;
+	color: rgb(67, 224, 187);
+	text-shadow: 
+    0 0 0.5rem rgb(15, 132, 110), 
+    0 0 1rem rgb(1, 165, 135);
+	transition: 250ms;
+	
 }
-a:visited {
-	color: navy;
+button:hover {
+	color: #c5efe7;
+	text-shadow: 
+	0 0 1rem #e37cf7,
+	0 0 1.5rem#0faa85, 
+    0 0 2rem  #19cf9f;
+	transition: 250ms;
 }
-a:hover {
-	color: orange;
+.container{
+    display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     gap: 10vh;
+     padding: 5vh 5vw;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 4px;
+   
+    font-size: 16px;
+}
+button[type="submit"] {
+    padding: 10px 20px;
+ 
+    color: black;
+    border: none;
+    cursor: pointer;
+    
+}
+button[type="submit"]:hover {
+ 
+    color: white;
+}
+textarea {
+    resize: vertical;
+}
+li.playing {
+	background-color: #ffffff0b; 
+	box-shadow: 
+    0 0 10px 10px #13b2a7c1, 
+    0 0 20px 5px #0b7d6ca2;
+	text-shadow: 
+    0 0 0.5rem rgb(15, 132, 110), 
+    0 0 1rem rgb(1, 165, 135);
+	transition: 250ms;
+}
+span{
+    color: crimson;
+	text-shadow: 
+    0 0 0.5rem rgba(232, 35, 74, 0.744), 
+    0 0 1rem rgba(184, 9, 44, 0.663);
+}
+a{
+    
+    text-align: center;
+    color: #ea80ff;
+    text-shadow: 
+    0 0 10px #a402c5a1, 
+    0 0 15px #ac01cfdd;
+}
+a:hover{
+    color: #f4c0ff;
+    text-shadow: 
+    0 0 20px #cf26f1a1, 
+    0 0 30px #b434cddd;
 }

@@ -1,214 +1,198 @@
-// if (window.location.pathname === '/playlists') {
-// document.querySelector('#firstPlaylistForm').addEventListener('submit', async event => {
-// 	event.preventDefault()
-
-// 	const messageDiv = document.querySelector('#message');
-// 	const title = document.querySelector('#firstForm__title').value;
-// 	const id = document.querySelector('#userId')
-// 	const selectedSongs = Array.from(
-// 		event.target.querySelectorAll('#firstForm__songs option:checked')
-// 	).map(option => option.value)
-
-// 	const data = {
-// 		id:id,
-// 		title: title,
-// 		songIds: selectedSongs
-// 	};
-
-// 	console.log(data);
-
-// 	fetch('/playlists', {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json'
-// 		},
-// 		body: JSON.stringify(data)
-// 	})
-// 	.then(response => {
-// 		console.log('Response first Playlist:', response);
-// 		return response.json()
-// 	})
-// 	.then(data => {
-// 		console.log('Data', data);
-// 		messageDiv.style.color = data.success ? 'green' : 'brown';
-// 		messageDiv.textContent = data.message
-// 	})
-// 	.catch(error => {
-// 		console.error('Error adding playlist: ', error)
-// 	});
-// });
-
-// document.querySelector('#secondPlaylistForm').addEventListener('submit', async event => {
-// 	event.preventDefault()
-
-// 	const messageDiv = document.querySelector('#message');
-// 	const selectedSongs = Array.from(
-// 		event.target.querySelectorAll('.secondPlaylistForm__songs option:checked')
-// 	).map(option => option.value)
-
-// 	const data = {
-// 		playlistId: event.target.getAttribute('name'),
-// 		songIds: selectedSongs
-// 	};
-
-// 	console.log(data);
-
-// 	fetch(`/playlists/addsongs`, {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json'
-// 		},
-// 		body: JSON.stringify(data)
-// 	})
-// 	.then(response => {
-// 		console.log('Response second Playlist:', response);
-// 		return response.json()
-// 	})
-// 	.then(data => {
-// 		console.log('Data', data);
-// 		messageDiv.style.color = data.success ? 'green' : 'brown';
-// 		messageDiv.textContent = data.message
-// 	})
-// 	.catch(error => {
-// 		console.error('Error adding playlist: ', error)
-// 	})
-// })
-
-// document.querySelector('#ThirdPlaylistForm').addEventListener('submit', async event => {
-// 	event.preventDefault()
-
-// 	const messageDiv = document.querySelector('#message');
-// 	const selectedSongs = Array.from(
-// 		event.target.querySelectorAll('#ThirdForm__songs option:checked')
-// 	).map(option => option.value)
-// 	const title = document.querySelector('#ThirdForm__title').value;
-// 	const data = {
-// 		playlistId: event.target.getAttribute('name'),
-// 		title:title,
-// 		songIds: selectedSongs
-// 	};
-
-// 	console.log(data);
-
-// 	fetch(`/playlists/update`, {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json'
-// 		},
-// 		body: JSON.stringify(data)
-// 	})
-// 	.then(response => {
-// 		console.log('Response third Playlist:', response);
-// 		return response.json()
-// 	})
-// 	.then(data => {
-// 		console.log('Data', data);
-// 		messageDiv.style.color = data.success ? 'green' : 'brown';
-// 		messageDiv.textContent = data.message
-// 	})
-// 	.catch(error => {
-// 		console.error('Error updating playlist: ', error)
-// 	})
-// })
-
-// }
 document.addEventListener('DOMContentLoaded', () => {
-    const messageDiv = document.querySelector('#message');
-    const userId = document.querySelector('#userId').getAttribute('name');
+    function openPopup(popupId, playlistId=null,songId=null) {
+        const modal = document.getElementById(popupId)
 
-    // Function to open modal form
-    function openForm(formId) {
-        document.getElementById(formId).style.display = 'block';
+
+        if(songId!==null||playlistId!==null){
+             modal.dataset.songId = songId
+            modal.dataset.playlistId = playlistId
+        }
+        delete modal.dataset.songId
+        delete modal.dataset.playlistId
+        modal.style.display = 'block'
+        
     }
+   
+    
 
-    // Function to close modal form
-    function closeForm(formId) {
-        document.getElementById(formId).style.display = 'none';
-    }
-
-    // Event listeners for opening forms
-    document.getElementById('openCreateForm').addEventListener('click', () => openForm('createForm'));
-    document.querySelectorAll('.openAddSongsForm').forEach(button => {
+    document.querySelectorAll('.add-song').forEach(button => {
         button.addEventListener('click', () => {
-            const playlistId = button.getAttribute('data-playlist-id');
-            document.getElementById('secondPlaylistForm').setAttribute('name', playlistId);
-            openForm('addSongsForm');
-        });
-    });
-    document.querySelectorAll('.openUpdateForm').forEach(button => {
-        button.addEventListener('click', () => {
-            const playlistId = button.getAttribute('data-playlist-id');
-            document.getElementById('thirdPlaylistForm').setAttribute('name', playlistId);
-            openForm('updateForm');
+            const playlistId = button.closest('.playlist-item').dataset.id;
+            openPopup('addSongPopup',playlistId)
         });
     });
 
-    // Event listeners for closing forms
-    document.getElementById('closeCreateForm').addEventListener('click', () => closeForm('createForm'));
-    document.getElementById('closeAddSongsForm').addEventListener('click', () => closeForm('addSongsForm'));
-    document.getElementById('closeUpdateForm').addEventListener('click', () => closeForm('updateForm'));
-
-    // Create playlist form submit
-    document.getElementById('firstPlaylistForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        const title = document.querySelector('#firstForm__title').value;
-        const selectedSongs = Array.from(event.target.querySelectorAll('#firstForm__songs option:checked')).map(option => option.value);
-        const data = { id: userId, title, songIds: selectedSongs };
-
-        fetch('/playlists', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            messageDiv.style.color = data.success ? 'green' : 'brown';
-            messageDiv.textContent = data.message;
-            if (data.success) closeForm('createForm');
-        })
-        .catch(error => console.error('Error adding playlist:', error));
+    document.querySelectorAll('.remove-song').forEach(button => {
+        button.addEventListener('click', () => {
+            const playlistId = button.closest('.playlist-item').dataset.id
+            const songId = button.dataset.songId
+            openPopup('removeSongPopup', playlistId, songId)
+        });
     });
 
-    // Add songs to playlist form submit
-    document.getElementById('secondPlaylistForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        const playlistId = event.target.getAttribute('name');
-        const selectedSongs = Array.from(event.target.querySelectorAll('.secondPlaylistForm__songs option:checked')).map(option => option.value);
-        const data = { playlistId, songIds: selectedSongs };
+    document.querySelectorAll('.edit-playlist').forEach(button => {
+        button.addEventListener('click', () => {
+            const playlistId = button.closest('.playlist-item').dataset.id
+            openPopup('editPlaylistPopup',playlistId)
+        });
+    });
+
+    const addSongForm = document.querySelector('#addSongForm');
+
+    addSongForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const playlistId = event.target.closest('.modal').dataset.playlistId
+        const messageDiv = document.querySelector('#message')
+        const formData = new FormData(addSongForm)
+        const selectedSongs = Array.from(formData.getAll('songs'))
 
         fetch(`/playlists/addsongs`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                playlistId: playlistId,
+                songs: selectedSongs
+            })
         })
         .then(response => response.json())
         .then(data => {
-            messageDiv.style.color = data.success ? 'green' : 'brown';
-            messageDiv.textContent = data.message;
-            if (data.success) closeForm('addSongsForm');
+            if (data.success) {
+                messageDiv.textContent = data.message
+                location.reload()
+            } else {
+                messageDiv.textContent = data.message
+            }
         })
-        .catch(error => console.error('Error adding songs to playlist:', error));
+        .catch(error => {
+            console.error('Error:', error)
+        });
     });
 
-    // Update playlist form submit
-    document.getElementById('thirdPlaylistForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        const playlistId = event.target.getAttribute('name');
-        const title = document.querySelector('#thirdForm__title').value;
-        const selectedSongs = Array.from(event.target.querySelectorAll('#thirdForm__songs option:checked')).map(option => option.value);
-        const data = { playlistId, title, songIds: selectedSongs };
-
-        fetch(`/playlists/update`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+    const editPlaylistForm = document.querySelector('#editPlaylistForm');
+    editPlaylistForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const playlistId = event.target.closest('.modal').dataset.playlistId;
+        const messageDiv = document.querySelector('#message')
+        const formData = new FormData(editPlaylistForm)
+        const title = formData.get('title')
+        const selectedSongs = Array.from(formData.getAll('songs'))
+        console.log(title, selectedSongs)
+        fetch(`/playlists/${playlistId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                songs: selectedSongs
+            })
         })
         .then(response => response.json())
         .then(data => {
-            messageDiv.style.color = data.success ? 'green' : 'brown';
-            messageDiv.textContent = data.message;
-            if (data.success) closeForm('updateForm');
+            if (data.success) {
+                messageDiv.textContent = data.message
+                location.reload()
+            } else {
+                messageDiv.textContent = data.message
+            }
         })
-        .catch(error => console.error('Error updating playlist:', error));
+        .catch(error => {
+            console.error('Error:', error)
+        })
+    })
+    const removeSongForm = document.querySelector('#removeSongForm')
+
+    removeSongForm.addEventListener('submit', (event) => {
+       event.preventDefault()
+       console.log(event.target.dataset)
+       const playlistId = event.target.closest('.modal').dataset.playlistId
+       const messageDiv = document.querySelector('#message')
+       const songId = event.target.closest('.modal').dataset.songId
+        console.log(playlistId,songId)
+        fetch(`/playlists/removesong`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                playlistId: playlistId,
+                songId: songId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                messageDiv.textContent = data.message;
+                location.reload()
+            } else {
+                messageDiv.textContent = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
+   document.querySelector('#createPlaylistButton').addEventListener('click', () => {
+    openPopup('createPlaylistPopup');
+});
+const createPlaylistForm = document.querySelector('#createPlaylistForm');
+createPlaylistForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const messageDiv = document.querySelector('#message');
+    const formData = new FormData(createPlaylistForm);
+    const title = formData.get('title');
+    const id=event.target.dataset.id
+    console.log(id)
+    const selectedSongs = Array.from(formData.getAll('songs'));
+
+    fetch(`/playlists`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id,
+            title: title,
+            songs: selectedSongs
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            messageDiv.textContent = data.message;
+            location.reload();
+        } else {
+            messageDiv.textContent = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+document.querySelectorAll('.delete-playlist').forEach(button => {
+    button.addEventListener('click', () => {
+        const playlistId = button.closest('.playlist-item').dataset.id
+        if (confirm('Are you sure you want to delete this playlist?')) {
+            fetch(`/playlists/${playlistId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.textContent = data.message
+                    location.reload()
+                } else {
+                    messageDiv.textContent = data.message
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error)
+            });
+        }
+    });
+});
+
 });

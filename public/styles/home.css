@@ -7,16 +7,45 @@
 	margin: 0 auto;
 	padding: 5vh 0;
 	margin-bottom: 15vh;
+	width: 70dvw;
 }
-.home ul li div {
-	height: 100%;
+
+.home ul li {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	padding: 2.4dvh 2dvw;
+	border-radius: 1rem;
+	min-height: 30dvh;
+	width: 100%;
+	transition: 250ms;
+}
+.home p span {
+	font-size: 1.8rem;
+	color: crimson;
+	text-shadow: 
+    0 0 0.5rem rgba(232, 35, 74, 0.744), 
+    0 0 1rem rgba(184, 9, 44, 0.663);
+}
+
+.home .text-content p{
+	margin-bottom: 1.5rem;
+}
+
+.home ul li .song-content{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
 }
 
 .home div {
 	text-align: center;
 }
-.home a {
-	padding: 1vh 1vw;
-	border: 2px solid black;
-	border-radius: 10px;
+
+audio{
+	width: 100%;
 }
+
+

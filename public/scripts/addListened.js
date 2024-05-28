@@ -30,9 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audios.forEach(audio => {
         audio.addEventListener('play', () => {
-            const songName = '<%= song.title %>'
-
-            const username = '<%= username %>'
+            const songName = audio.getAttribute('data-song-title')
+            const username = audio.getAttribute('data-username')
             console.log(username, ' ', songName)
             addListened(username, songName)
         })

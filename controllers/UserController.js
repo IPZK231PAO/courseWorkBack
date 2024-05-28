@@ -185,3 +185,25 @@ exports.getAllUsers=async()=>{
 		return {success:false, message:'Внутрішня помилка серверу', error:error}
 	}
 }
+
+exports.updateUser=async (req,res)=>{
+	try{
+		const userId=req.params.id;
+		const updatedData=req.body;
+		const updatedUser=await User.findByIdAndUpdate(userId,updatedData,{new:true})
+		res.status(200).json(updatedUser)
+	}catch(error){
+		res.status(500).json({error:'Update failed'})
+	}
+}
+
+exports.deleteUser=async (req,res)=>{
+	try{
+		const userId=req.params.id
+		console.log('Deleting user: ', userId)
+		await User.findByIdAndDelete(userId)
+		res.status(200).json({message:'User deleted'})
+	}catch(error){
+		res.status(500).json({error:'Deleting failed'})
+	}
+}

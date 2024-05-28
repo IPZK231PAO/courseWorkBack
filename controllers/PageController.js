@@ -4,20 +4,20 @@ const userController = require('./UserController')
 const playlistController = require('./PlaylistController')
 const generateLinks = (authenticated, role) => {
 	let links = [
-		{ url: '/', title: 'Home' },
-		{ url: '/library', title: 'Library' },
-		{ url: '/upload', title: 'Upload' },
-		{ url: '/register', title: 'Registration' },
-		{ url: '/login', title: 'Login' },
-		{ url: '/profile', title: 'Profile' },
-		{ url: '/history', title: 'History' },
-		{ url: '/playlists', title: 'Playlists' },
-		{ url: '/logout', title: 'Logout' }
+		{ url: '/', title: 'Головна' },
+		{ url: '/library', title: 'Бібліотека' },
+		{ url: '/upload', title: 'Завантажити' },
+		{ url: '/register', title: 'Реєстрація' },
+		{ url: '/login', title: 'Увійти' },
+		{ url: '/profile', title: 'Профіль' },
+		{ url: '/history', title: 'Історія' },
+		{ url: '/playlists', title: 'Плейлисти' },
+		{ url: '/logout', title: 'Вийти' }
 	]
 
 	if (authenticated) {
 		if (role === 'admin') {
-			links.push({ url: '/admin', title: 'Admin Dashboard' })
+			links.push({ url: '/admin', title: 'Адмін Панель' })
 		} else {
 			const hiddenLinks = ['/admin']
 			links = links.filter(link => !hiddenLinks.includes(link.url))
@@ -42,16 +42,18 @@ const generateLinks = (authenticated, role) => {
 }
 exports.admin=async(req,res)=>{
 	role = req.user.role
+	id=req.user.id
 	const links =  generateLinks(true, role)
 	const {users}= await userController.getAllUsers()
 	const songs=await songController.getAllSongs()
 	const playlists = await playlistController.getAllPlaylists()
 	res.render('main', {
+		id,
 		links,
 		playlists,
 		users, 
 		songs,
-		title: 'Admin Dashboard',
+		title: 'Адміністративна панель',
 		content: 'admin'
 	})
 }
@@ -66,10 +68,10 @@ exports.playlists = async (req, res) => {
 	console.log(playlists)
 	res.render('main', {
 		links,
-		id:id,
+		id,
 		playlists,
-		allSongs: songs,
-		title: 'Playlists',
+		songs,
+		title: 'Плейлісти',
 		content: 'playlists'
 	})
 }
@@ -104,7 +106,7 @@ exports.profile = async (req, res) => {
 		username,
 		user,
 		stylePath,
-		title: 'Profile Page',
+		title: 'Профіль користувача',
 		content: 'profile'
 	})
 }
@@ -130,7 +132,7 @@ exports.homePage = async (req, res) => {
 		links,
 		songs: randomSongs,
 		username,
-		title: 'Home Page',
+		title: 'Головна',
 		content: 'home'
 	})
 }
@@ -179,7 +181,7 @@ exports.register = async (req, res) => {
 	try {
 		res.render('main', {
 			links,
-			title: 'Auth Page',
+			title: 'Реєстрація',
 			content: 'register'
 		})
 	} catch (error) {
@@ -193,7 +195,7 @@ exports.login = async (req, res) => {
 	try {
 		res.render('main', {
 			links,
-			title: 'Auth Page',
+			title: 'Увійти',
 			content: 'login'
 		})
 	} catch (error) {

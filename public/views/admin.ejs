@@ -1,60 +1,166 @@
-<h2>Admin Dashboard</h2>
+<div id="editSongPopup" class="modal">
+    <div class="modal-content" data-song-id="">
+        <span class="close" onclick="closePopup('editSongPopup')">&times;</span>
+        <h2>Edit Song</h2>
+        <form id="editSongForm">
+            <label for="title">Title:</label>
+            <input type="text" name="title" placeholder="Song Title">
+            <label for="artist">Artist:</label>
+            <input type="text" name="artist" placeholder="Song Artist">
+            <label for="album">Album:</label>
+            <input type="text" name="album" placeholder="Song Album">
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div id="editUserPopup" class="modal">
+    <div class="modal-content" data-user-id="">
+        <span class="close" onclick="closePopup('editUserPopup')">&times;</span>
+        <h2>Edit User</h2>
+        <form id="editUserForm">
+            <label for="username">Username:</label>
+            <input type="text" name="username" placeholder="Username">
+            <label for="email">Email:</label>
+            <input type="text" name="email" placeholder="Email">
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div id="editPlaylistPopup" class="modal">
+    <div class="modal-content" data-playlist-id="">
+        <span class="close" onclick="closePopup('editPlaylistPopup')">&times;</span>
+        <h2>Edit Playlist</h2>
+        <form id="editPlaylistForm">
+            <label for="title">Title:</label>
+            <input type="text" name="title" placeholder="New Playlist Title">
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+<div id="createPlaylistPopup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePopup('createPlaylistPopup')">&times;</span>
+        <h2>Створити плейліст</h2>
+        <form id="createPlaylistForm" data-id="<%= id %>">
+            <input type="text" name="title" placeholder="Назва плейліста" required />
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Створити</button>
+        </form>
+    </div>
+</div>
+<div id="addSongPopup" class="modal">
+    <div class="modal-content" data-playlist-id="">
+        <span class="close" onclick="closePopup('addSongPopup')">&times;</span>
+        <h2>Add Song</h2>
+        <form id="addSongForm">
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Add Selected Songs</button>
+        </form>
+    </div>
+</div>
+
+<div id="removeSongPopup" class="modal">
+    <div class="modal-content" data-playlist-id="" data-song-id="">
+        <span class="close" onclick="closePopup('removeSongPopup')">&times;</span>
+        <h2>Видалити пісню</h2>
+        <form id="removeSongForm">
+            <p>Ви точно хочете видалити цю пісню з Вашого плейлісту?</p>
+            <button type="submit">Видалити</button>
+        </form>
+    </div>
+</div>
+<!-- * modals -->
+
+<h2>Адміністративна панель</h2>
 
 <h3>Список пісень</h3>
 <ul id="AdminSongList">
-	<% songs.forEach(song => { %>
-	<li class="AdminSongList-item">
-		<h3 class="AdminSongList-title">Title: <%= song.title %></h3>
-        <p class="AdminSongList-ID"><b>ID: <%= song._id %></b></p>
-		<p class="AdminSongList-artist">Artist: <%= song.artist %></p>
-		<p class="AdminSongList-album">Album: <%= song.album %></p>
-		<p class="AdminSongList-duration">Duration: <%= song.duration %> minutes</p>
-		<audio controls name="<%= song.title %>">
-			<source src="<%= song.filePath %>" type="audio/mpeg" />
-			Your browser does not support the audio tag.
-		</audio>
-		<a href="./music/<%= song.filename %>" download="<%= song.filename %>">Завантажити</a>
-	</li>
-	<% }); %>
+    <% songs.forEach(song => { %>
+    <li class="AdminSongList-item" data-id="<%= song._id %>">
+        <h3 class="AdminSongList-title"><span>Назва </span> <%= song.title %></h3>
+        <p class="AdminSongList-ID"><b><span>ID </span> <%= song._id %></b></p>
+        <p class="AdminSongList-artist"><span>Виконавець </span><%= song.artist %></p>
+        <p class="AdminSongList-album"><span>Альбом </span><%= song.album %></p>
+        <p class="AdminSongList-duration"><span>Тривалість </span><%= song.duration %> minutes</p>
+        <audio controls name="<%= song.title %>">
+            <source src="<%= song.filePath %>" type="audio/mpeg" />
+            Your browser does not support the audio tag.
+        </audio>
+        <a href="./music/<%= song.filename %>" download="<%= song.filename %>">Завантажити</a>
+        <button class="edit-song">Edit</button>
+        <button class="delete-song">Delete</button> <!-- Додано кнопку видалення -->
+    </li>
+    <% }); %>
 </ul>
 
-<h3>Список користувачів</h3>
+
+<p>Список користувачів</p>
 <ul id="AdminUsersList">
-	<% users.forEach(user => { %>
-	<li class="AdminUsersList-item">
-		<h3 class="AdminUsersList-username">Username: <%= user.username %></h3>
-		<p class="AdminUsersList-ID"><b>ID: <%= user._id %></b></p>
-        <p class="AdminUsersList-email">Email: <%= user.email %></p>
-		<p class="AdminUsersList-password">Password: <%= user.password %></p>
-		<ul class="AdminUsersList-listened">
+    <% users.forEach(user => { %>
+    <li class="AdminUsersList-item" data-id="<%= user._id %>">
+        <p class="AdminUsersList-username"><span>Ім'я користувача </span><%= user.username %></p>
+        <p class="AdminUsersList-ID"><b><span>ID </span><%= user._id %></b></p>
+        <p class="AdminUsersList-email"><span>Пошта </span><%= user.email %></p>
+        <p class="AdminUsersList-password"><span>Пароль </span><%= user.password %></p>
+        <ul class="AdminUsersList-listened">
             <p><b>Song history list: </b></p>
             <% user.listened.forEach(listen => { %>
-                <li>Song Title: <%= listen %></li>
+            <li>Song Title: <%= listen %></li>
             <% }); %>
         </ul>
-		<p>Role: <%= user.role %></p>
-	</li>
-	<% }); %>
+        <p>Role: <%= user.role %></p>
+        <button class="edit-user">Змінити</button>
+        <button class="delete-user">Видалити</button>
+    </li>
+    <% }); %>
 </ul>
 
 <h3>Список плейлистів</h3>
-<ul id="AdminPlaylistsList">
-	<% playlists.forEach(playlist => { %>
-	<li class="AdminPlaylistsList-item">
-		<h3 class="AdminPlaylistsList-title">Title: <%= playlist.title %></h3> <!-- Fixed typo -->
-        <p class="AdminPlaylistsList-ID"><b>ID: <%= playlist._id %></b></p>
+<ul id="playlists">
+    <% playlists.forEach(playlist => { %>
+    <li class="playlist-item" data-id="<%= playlist._id %>">
+        <p class="playlist-title">Title: <%= playlist.title %></p>
+        <p class="playlist-ID"><b>ID: <%= playlist._id %></b></p>
         <p><b>Songs:</b></p>
         <ul>
             <% playlist.songs.forEach(song => { %>
-                <p class="AdminSongList-ID"><b>ID: <%= song._id %></b></p>
-		<p class="AdminSongList-artist">Artist: <%= song.artist %></p>
-		<p class="AdminSongList-album">Album: <%= song.album %></p>
-		<p class="AdminSongList-duration">Duration: <%= song.duration %> minutes</p>
+            <li>
+                <p class="playlist-song-title"><span>Назва </span><%= song.title %></p>
+                <p class="playlist-song-artist"><span>Виконавець </span><%= song.artist %></p>
+                <p class="playlist-song-album"><span>Альбом </span><%= song.album %></p>
+                <p class="playlist-song-duration"><span>Тривалість </span><%= song.duration %> minutes</p>
+                <audio controls name="<%= song.title %>">
+                    <source src="<%= song.filePath %>" type="audio/mpeg" />
+                    Your browser does not support the audio tag.
+                </audio>
+                <button class="remove-song" data-song-id="<%= song._id %>">Remove</button>
+            </li>
             <% }); %>
         </ul>
-		<p class="AdminPlaylistsList-createdAt">createdAt: <%= playlist.createdAt %></p>
-		<p class="AdminPlaylistsList-updatedAt">updatedAt: <%= playlist.updatedAt %></p>
-		<p class="AdminPlaylistsList-createdBy">createdBy: <%= playlist.createdBy %></p>
-	</li>
-	<% }); %>
+        <button class="edit-playlist">Змінити</button>
+        <button class="delete-playlist">Видалити</button>
+        <button class="add-song">Додати пісню</button>
+    </li>
+    <% }); %>
 </ul>
+<div id="message"></div>
+<script>
+	function closePopup(popupId) {
+	  document.getElementById(popupId).style.display = 'none';
+  }
+</script>

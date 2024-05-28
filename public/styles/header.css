@@ -1,15 +1,42 @@
-header {
-	display: flex;
-	position: relative;
-	gap: 5%;
-	padding: 2vh;
-}
 
-header a.admindashboard {
-	color: crimson;
-	position: absolute;
-	right: 2vw;
+header{
+	padding: 1vh 0.7vw ;
+	background-color: #4a4a4a3a;
+	box-shadow: 
+    0 0 20px 5px #de4dfae7, 
+    0 0 15px 10px #af44c5cd;
 }
-header a.admindashboard:hover {
-	transform: scale(1.05);
+header nav{
+	display: flex;
+	justify-content: space-around;
+}
+header nav a{
+	padding: 0.8rem 1.6rem;
+	color: rgb(67, 224, 187);
+	text-shadow: 
+    0 0 0.5rem rgb(15, 132, 110), 
+    0 0 1rem rgb(1, 165, 135);
+	transition: 250ms;
+	
+}
+header nav a:hover{
+	color: #c5efe7;
+	text-shadow: 
+	0 0 1rem #e37cf7,
+	0 0 1.5rem#0faa85, 
+    0 0 2rem  #19cf9f;
+	transition: 250ms;
+}
+header nav a:last-child{
+	text-shadow: 
+    0 0 0.5rem rgba(232, 35, 74, 0.744), 
+    0 0 1rem rgba(184, 9, 44, 0.663);
+	color: crimson;
+}
+header nav a:last-child:hover{
+	color: rgb(241, 59, 95);
+	text-shadow: 
+	0 0 1rem rgb(255, 65, 103),
+	0 0 1.5rem rgb(255, 27, 72), 
+    0 0 2rem  rgb(216, 0, 43);
 }

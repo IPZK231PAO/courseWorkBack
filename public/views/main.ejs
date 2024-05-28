@@ -7,12 +7,19 @@
 		<script src="../scripts/searchSort.js" defer-></script>
 		<script src="../scripts/upload.js" defer></script>
 		<script src="../scripts/playlist.js" defer></script>
+		<script src="../scripts/admin.js" defer></script>
 		<script src="../scripts/addListened.js" defer></script>
+		<script src="../scripts/profile.js" defer></script>
+		<script src="../scripts/audio.js" defer></script>
 		<link rel="stylesheet" href="../styles/global.css" />
+		
 	</head>
 	<body>
 		<%- include('../partials/header') %>
-		<h1><%= title %></h1>
+		<div class="container">
+			<h1><%= title %></h1>
 		<main><%- include(content)%></main>
+		</div>
+		
 	</body>
 </html>

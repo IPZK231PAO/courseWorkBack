@@ -1,5 +1,6 @@
-<%- include('../partials/search') %>
+
 <ul id="songList">
+	<%- include('../partials/search') %>
 	<% history.forEach(title => { %> <% songs.forEach(song => { %> <% if (title
 	=== song.title) { %>
 	<li class="song-item">

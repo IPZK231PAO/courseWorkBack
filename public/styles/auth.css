@@ -1,0 +1,115 @@
+#LoginPageForm,
+#RegisterPageForm{
+    background-color: #b3b3b312;
+    margin: 0 auto;
+    padding: 10vh 0;
+    max-width: 40vw;
+    min-width: 25vw;
+    box-shadow: 0 2px 6px 0px #232323;
+    border-radius: 14px;
+    transition:250ms ;
+}
+#LoginPageForm:hover,
+#RegisterPageForm:hover{
+    background-color: #2828282d;
+
+    box-shadow: 
+    0 0 10px 10px #13b2a7c1, 
+     0 0 20px 5px #0b7d6ca2;
+    transition:250ms ;
+}
+#LoginPageForm .form-group, 
+#RegisterPageForm .form-group{
+   width: 70%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+   justify-content: space-between;
+  
+
+}
+#RegisterPageForm .form-group{
+    margin-bottom: 3em;
+}
+
+#RegisterPageForm p {
+    color: #e0e0e0c2;
+    font-size: 1.4rem;
+}
+#RegisterPageForm a{
+    color: #b830d4;
+}
+#RegisterPageForm a:hover{
+    color: #d56aeb;
+}
+#LoginPageForm .form-group input, 
+#RegisterPageForm .form-group input {
+    border: 5px solid transparent;
+    background-color: #086f5c46;
+    text-overflow:ellipsis;
+    color: #ea80ff;
+    text-shadow: 
+    0 0 10px #a402c5a1, 
+    0 0 15px #ac01cfdd;
+  
+}
+#LoginPageForm .form-group input, 
+#LoginPageForm .form-group button,
+#RegisterPageForm .form-group input, 
+#RegisterPageForm .form-group button{
+    font-size: 1.5rem;
+    border-radius: 0.35em;
+    transition: 0.3s;
+
+}
+#LoginPageForm .form-group input:-webkit-autofill,
+#RegisterPageForm .form-group input:-webkit-autofill  {
+    -webkit-box-shadow: 0 0 0 30px #047861ef inset !important ;
+    -webkit-text-fill-color: #c77ef5c1 !important; 
+}
+
+#LoginPageForm .form-group input:focus,
+#LoginPageForm .form-group input:focus,
+#RegisterPageForm .form-group input:focus,
+#RegisterPageForm .form-group input:focus   {
+  box-shadow: 
+  0 0 10px 10px #13b2a7c1, 
+   0 0 20px 5px #0b7d6ca2;
+  
+}
+@keyframes blink-1{0%,50%,100%{opacity:1}25%,75%{opacity:0.2}}
+#LoginPageForm .form-group button,
+#RegisterPageForm .form-group button{
+    padding: 1rem 0;
+    width: 70%;
+    background-color: #1055484d; 
+    transition: 0.3s;
+    color: #d999e4b2;
+}
+#LoginPageForm .form-group button:hover,
+#RegisterPageForm .form-group button:hover{
+    text-shadow: 
+    0 0 10px 5px #a402c5a1, 
+    0 0 15px 10px #ac01cfdd;
+    transform: scale(1.1);
+    color: #f7d2ffb4;
+    animation:blink-1 .6s both;
+    background-color: #6f08843c;
+    box-shadow: 
+    0 0 10px 5px #de4dfae7, 
+    0 0 20px 10px #b044c597;
+    transition: 0.3s;
+  }
+#LoginPageForm.form-group input:hover  
+#LoginPageForm .form-group input::-moz-placeholder,
+#RegisterPageForm.form-group input:hover  
+#RegisterPageForm .form-group input::-moz-placeholder{
+    color: #f7d2ffb4;
+    
+  } 
+#LoginPageForm .form-group input::placeholder,
+#RegisterPageForm .form-group input::placeholder{
+    color: #f7d2ffb4;
+    font-size: 1.5rem;
+}

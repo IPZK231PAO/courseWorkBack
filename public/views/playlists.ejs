@@ -1,162 +1,94 @@
-<!-- <div id="playlists-container">
-	<% if (playlists.length === 0) { %>
-	<p>No playlists available. Create a new playlist to get started.</p>
-	<form id="firstPlaylistForm" enctype="multipart/form-data">
-		<div>
-			<label for="title">Playlist Title:</label>
-			<input type="text" id="firstForm__title" name="title" required />
-		</div>
-		<select name="songIds" multiple id="firstForm__songs">
-			<% allSongs.forEach(song => { %>
-			<option value="<%= song._id %>"><%= song.title %></option>
-			<% }) %>
-		</select>
-		<button type="submit">Create Playlist</button>
-	</form>
-	<% } else { %> 
-		<div id="userId" name="<%= id %>"></div>
-		<% playlists.forEach(playlist => { %>
-		<h2><%= playlist.title %></h2>
-		<ul>
-			<% playlist.songs.forEach(song => { %>
-			<li><%= song.title %> - <%= song.artist %></li>
-			<% }) %>
-		</ul>
-		<form id="secondPlaylistForm" name="<%= playlist._id %>">
-			<label for="songs">Add Songs:</label>
-			<select class="secondPlaylistForm__songs" name="songIds" multiple>
-				<% allSongs.forEach(song => { %>
-				<option value="<%= song._id %>"><%= song.title %></option>
-				<% }) %>
-			</select>
-			<button type="submit">Add Songs</button>
-		</form>
-		<p>Update current playlist.</p>
-		<form id="ThirdPlaylistForm" enctype="multipart/form-data">
-		<div>
-			<label for="title">Playlist Title:</label>
-			<input type="text" id="ThirdForm__title" name="title" required />
-		</div>
-		<select name="songIds" multiple id="ThirdForm__songs">
-			<% allSongs.forEach(song => { %>
-			<option value="<%= song._id %>"><%= song.title %></option>
-			<% }) %>
-		</select>
-		<button type="submit">Update current playlist</button>
-	</form>
-	<% }) %> 
-	<% } %>
-	<div id="message"></div>
-	<p>You can create one more.</p>
-	<form id="firstPlaylistForm" enctype="multipart/form-data">
-		<div>
-			<label for="title">Playlist Title:</label>
-			<input type="text" id="firstForm__title" name="title" required />
-		</div>
-		<select name="songIds" multiple id="firstForm__songs">
-			<% allSongs.forEach(song => { %>
-			<option value="<%= song._id %>"><%= song.title %></option>
-			<% }) %>
-		</select>
-		<button type="submit">Create New Playlist</button>
-	</form>
+<div id="addSongPopup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePopup('addSongPopup')">&times;</span>
+        <h2>Add Song</h2>
+        <form id="addSongForm">
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Add Selected Songs</button>
+        </form>
+    </div>
 </div>
-<script>
-	
+<div id="createPlaylistPopup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePopup('createPlaylistPopup')">&times;</span>
+        <h2>Створити плейліст</h2>
+        <form id="createPlaylistForm" data-id="<%= id %>">
+            <input type="text" name="title" placeholder="Назва плейліста" required />
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Створити</button>
+        </form>
+    </div>
+</div>
+<div id="removeSongPopup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePopup('removeSongPopup')">&times;</span>
+        <h2>Remove Song</h2>
+        <form id="removeSongForm">
+            <p>Are you sure you want to remove this song?</p>
+            <button type="submit">Remove Song</button>
+        </form>
+    </div>
+</div>
 
-</script> -->
-<div id="playlists-container">
-    <% if (playlists.length === 0) { %>
-    <p>No playlists available. Create a new playlist to get started.</p>
-    <button id="openCreateForm">Create Playlist</button>
-    <% } else { %>
-    <div id="userId" name="<%= id %>"></div>
+<div id="editPlaylistPopup" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePopup('editPlaylistPopup')">&times;</span>
+        <h2>Edit Playlist</h2>
+        <form id="editPlaylistForm">
+            <input type="hidden" name="playlistId" value="">
+            <input type="text" name="title" placeholder="New Playlist Title">
+            <select name="songs" multiple>
+                <% songs.forEach(song => { %>
+                    <option value="<%= song._id %>"><%= song.title %></option>
+                <% }); %>
+            </select>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+
+<ul id="playlists">
+    <h3>Список плейлистів</h3>
     <% playlists.forEach(playlist => { %>
-    <div class="playlist">
-        <h2><%= playlist.title %></h2>
+    <li class="playlist-item" data-id="<%= playlist._id %>">
+        <p class="playlist-title">Плейлист: <%= playlist.title %></p>
+        <p><b>Пісні</b></p>
         <ul>
             <% playlist.songs.forEach(song => { %>
-            <li><%= song.title %> - <%= song.artist %></li>
-            <% }) %>
+            <li>
+                <p class="playlist-song-title"><span>Назва </span><%= song.title %></p>
+                <p class="playlist-song-artist"><span>Виконавець </span><%= song.artist %></p>
+                <p class="playlist-song-album"><span>Альбом </span><%= song.album %></p>
+                <p class="playlist-song-duration"><span>Тривалість </span><%= song.duration %> minutes</p>
+                <audio controls name="<%= song.title %>">
+                    <source src="<%= song.filePath %>" type="audio/mpeg" />
+                    Your browser does not support the audio tag.
+                </audio>
+                <button class="remove-song" data-song-id="<%= song._id %>">Видалити</button>
+            </li>
+            <% }); %>
         </ul>
-        <button class="openAddSongsForm" data-playlist-id="<%= playlist._id %>">Add Songs</button>
-        <button class="openUpdateForm" data-playlist-id="<%= playlist._id %>">Update Playlist</button>
-    </div>
-    <% }) %>
-    <button id="openCreateForm">Create New Playlist</button>
-    <% } %>
-    <div id="message"></div>
+        <p><span>Дії з плейлістом</span></p>
+        <button class="edit-playlist">Змінити</button>
+        <button class="delete-playlist">Видалити</button>
+        <button class="add-song">Додати пісню</button>
+    </li>
+    <% }); %>
+</ul>
+<button id="createPlaylistButton">Створити плейліст</button>
+<div id="message"></div>
+<script>
+      function closePopup(popupId) {
+        document.getElementById(popupId).style.display = 'none';
+    }
+</script>
 
-    <!-- Hidden Forms -->
-    <div id="createForm" class="modal">
-        <form id="firstPlaylistForm" enctype="multipart/form-data">
-            <div>
-                <label for="title">Playlist Title:</label>
-                <input type="text" id="firstForm__title" name="title" required />
-            </div>
-            <select name="songIds" multiple id="firstForm__songs">
-                <% allSongs.forEach(song => { %>
-                <option value="<%= song._id %>"><%= song.title %></option>
-                <% }) %>
-            </select>
-            <button type="submit">Create Playlist</button>
-            <button type="button" id="closeCreateForm">Close</button>
-        </form>
-    </div>
-
-    <div id="addSongsForm" class="modal">
-        <form id="secondPlaylistForm">
-            <label for="songs">Add Songs:</label>
-            <select class="secondPlaylistForm__songs" name="songIds" multiple>
-                <% allSongs.forEach(song => { %>
-                <option value="<%= song._id %>"><%= song.title %></option>
-                <% }) %>
-            </select>
-            <button type="submit">Add Songs</button>
-            <button type="button" id="closeAddSongsForm">Close</button>
-        </form>
-    </div>
-
-    <div id="updateForm" class="modal">
-        <form id="thirdPlaylistForm" enctype="multipart/form-data">
-            <div>
-                <label for="title">Playlist Title:</label>
-                <input type="text" id="thirdForm__title" name="title" required />
-            </div>
-            <select name="songIds" multiple id="thirdForm__songs">
-                <% allSongs.forEach(song => { %>
-                <option value="<%= song._id %>"><%= song.title %></option>
-                <% }) %>
-            </select>
-            <button type="submit">Update Playlist</button>
-            <button type="button" id="closeUpdateForm">Close</button>
-        </form>
-    </div>
-</div>
-
-
-
-<style>
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
-
-.modal form {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-</style>

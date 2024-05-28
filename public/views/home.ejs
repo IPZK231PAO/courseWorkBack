@@ -1,34 +1,34 @@
 <section class="home">
-	<h2>Welcome <%= username %></h2>
-	<p>Here you can listen your favourite music</p>
-	<h2>Пісні дня для вас</h2>
+	<div class="text-content">
+		<p>З поверненням, <span><%= username %></span>! </p>
+		<p>На цьому порталі Ви можете слухати улюблені пісні</p>
+		<p>Пісні дня для вас</p>
+	</div>
 	<ul>
-		<% songs.forEach((song) => { %>
-		<li>
-			<div>
-				<h3>
-					Title:<br />
-					<%= song.title %>
-				</h3>
-				<p>
-					Artist:<br />
-					<%= song.artist %>
-				</p>
-			</div>
-			<audio controls>
-				<source src="./<%= song.filePath %>" type="audio/mpeg" />
-				Your browser does not support the audio tag.
-			</audio>
-		</li>
-		<% }); %>
+	  <% songs.forEach((song) => { %>
+	  <li>
+		<div class="song-content">
+		  <h3>
+			<%= song.title %>
+		  </h3>
+		  <p>
+			<%= song.artist %>
+		  </p>
+		</div>
+		<audio loop preload="metadata" controls data-song-title="<%= song.title %>" data-username="<%= username %>">
+		  <source src="./<%= song.filePath %>" type="audio/mpeg" />
+		  Your browser does not support the audio tag.
+		</audio>
+	  </li>
+	  <% }); %>
 	</ul>
 	<div>
-		<p>Завітайте в Бібліотеку</p>
-		<a class="link" href="<%= links.find(link=>link.url==='/library').url %>"
-			>Бібліотека</a
-		>
+	  <p>Завітайте в Бібліотеку</p>
+	  <a class="link" href="<%= links.find(link => link.url === '/library').url %>">
+		Бібліотека
+	  </a>
 	</div>
-</section>
+  </section>
 <script>
-	
+
 </script>

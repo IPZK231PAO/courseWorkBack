@@ -1,16 +1,13 @@
-<form action="/register" method="POST">
+<form id="RegisterPageForm" action="/register" method="POST">
 	<div class="form-group">
-		<label for="username">Username:</label>
-		<input type="text" id="username" name="username" required />
+		<input placeholder="Ім'я користувача" type="text" id="username" name="username" required />
+
+		<input placeholder="Пошта" type="email" id="email" name="email" required />
+
+		<input placeholder="Пароль" type="password" id="password" name="password" required />
+		<button type="submit">Зареєструватись</button>
 	</div>
-	<div class="form-group">
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required />
-	</div>
-	<div class="form-group">
-		<label for="password">Password:</label>
-		<input type="password" id="password" name="password" required />
-	</div>
-	<button type="submit">Register</button>
+	
+	<p>Вже є користувачем? <a href="/login">Увійти</a></p>
 </form>
-<p>Already have an account? <a href="/login">Login here</a></p>
+

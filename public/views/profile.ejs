@@ -1,22 +1,14 @@
 <section class="profile">
 	<div class="profile__avatar"><%= user.username[0] %></div>
-	<div>
-		<h2>Ім'я користувача: <%= user.username %></h2>
+		<p><span>Ім'я користувача</span> <%= user.username %></p>
+	
+		<p><span>Ел. пошта </span> <%= user.email %></p>
+	
+		<p class="profile__password">
+			<span>Пароль </span> <%= user.password.substring(0,10).replace(/./g, '*') %>
+		</p>	
 	</div>
-	<div>
-		<h2>Ел. пошта: <%= user.email %></h2>
-		
-	</div>
-	<div>
-		<h2 class="profile__password">
-			Піроль: <%= user.password.substring(0,10).replace(/./g, '*') %>
-		</h2>
-		
-	</div>
-	<div>
-		<a class="link" href="<%= links.find(link=>link.url==='/logout').url %>"
-			>Logout</a
-		>
-	</div>
+<a class="link" href="<%= links.find(link=>link.url==='/logout').url %>">Вийти з акаунту</a>
+	
 </section>
 

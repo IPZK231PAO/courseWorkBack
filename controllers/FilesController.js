@@ -36,15 +36,15 @@ exports.uploadsProcessing = () => {
 		})
 	})
 }
+exports.deleteFile = (filePath) => {
+    return new Promise((resolve, reject) => {
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
 
-exports.linksProcessing = async () => {
-	try {
-		const links = await this.viewsProcessing()
-		const normalLinks = links.map(link => link.replace('.ejs', ''))
-		console.log(`LINKS PROCESSED: ${normalLinks}`)
-		return normalLinks
-	} catch (err) {
-		console.log(err)
-		throw err
-	}
-}

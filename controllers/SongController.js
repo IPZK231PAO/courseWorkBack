@@ -1,7 +1,7 @@
 const Song = require('../models/song')
 const path = require('path')
 const mm = require('music-metadata')
-
+const filesController=require('./FilesController')
 // ? For saving EXISTING song
 exports.processExistingSongMetadata = async filename => {
 	try {
@@ -132,14 +132,49 @@ exports.getAllSongs = async (req, res) => {
 	}
 }
 
-exports.getSongById = async (req, res) => {
-	try {
-		const song = await Song.findById(req.params.id)
-		if (!song) {
-			return
-		}
-		res.json(song)
-	} catch (err) {
-		console.error(`Cannot get song by this ID. ${err}`)
-	}
+exports.updateSong = async (req, res) => {
+    try {
+        console.log('UPDATING SONG')
+        const { id } = req.params
+        const updates = req.body
+
+        const song = await Song.findByIdAndUpdate(id, updates, { new: true })
+
+        if (!song) {
+            return res.status(404).json({ success: false, message: 'Пісню не знайдено' })
+        }
+        res.json({ success: true, message: 'Пісню оновлено', song })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Помилка оновлення пісні',
+            error: error.message
+        })
+    }
 }
+
+
+exports.deleteSong = async (req, res) => {
+    try {
+        console.log('DELETING SONG');
+        const song = await Song.findByIdAndDelete(req.params.id);
+        if (!song) {
+            return res.status(404).json({ success: false, message: 'Пісня не знайдена' });
+        }
+
+        const filePath = path.join(__dirname, '..', 'public', 'music', song.filename);
+		console.log(filePath)
+        await filesController.deleteFile(filePath);
+
+        res.json({ success: true, message: 'Пісню видалено' });
+    } catch (error) {
+        console.error('Error deleting song:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Помилка видалення пісні',
+            error: error.message
+        });
+    }
+};
+
+
