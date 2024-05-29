@@ -38,14 +38,3 @@ function sortSongs() {
     searchSongs()
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const audios = document.querySelectorAll('audio')
-
-    audios.forEach(audio => {
-        audio.addEventListener('play', event => {
-            const songName = event.target.getAttribute('name')
-            const username = '<%= username %>'
-            addListened(username, songName)
-        })
-    })
-})

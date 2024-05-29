@@ -9,9 +9,7 @@ const authMiddleware = (req, res, next) => {
 	if (!token) {
 		return res
 			.status(401)
-			.send(
-				'You should to registration or login <br> <a href="/login">Login</a>  <br> <a href="/register">Registration</a>'
-			)
+			.redirect('/register')
 	} else {
 		jwt.verify(token, KEY, (error, decoded) => {
 			if (error) {

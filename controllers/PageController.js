@@ -82,6 +82,7 @@ exports.history = async (req, res) => {
 	const links = generateLinks(true, role)
 	const { history } = await userController.getListened(username)
 	const songs = await songController.getAllSongs()
+
 	res.render('main', {
 		links,
 		history,
@@ -143,12 +144,12 @@ exports.library = async (req, res) => {
 
 	try {
 		const songs = await songController.getAllSongs()
-
+     
 		res.render('main', {
 			links,
 			songs,
 			username,
-			title: 'Library',
+			title: 'Бібліотека',
 			content: 'library'
 		})
 	} catch (error) {
@@ -168,7 +169,7 @@ exports.uploadPage = async (req, res) => {
 			links,
 			username,
 			uploads,
-			title: 'Upload Page',
+			title: 'Завантажити пісню',
 			content: 'upload'
 		})
 	} catch (err) {

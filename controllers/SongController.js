@@ -64,19 +64,33 @@ exports.processNewSong = async (req, res) => {
 		const relativePath = `/music/${originalname}`
 		console.log('PROCESSING NEW SONG: ', originalname)
 		const metadata = await mm.parseFile(path)
+		console.log(metadata)
+		if ((metadata.common.title === '') || ( metadata.common.artist === '')) {
+			filesController.deleteFile(path)
+			res.status(400).json({ success: false, message: 'Назва або виконавець повинні бути вказані' });
+		}
+		if (!metadata.common.album || metadata.common.album === '') {
+			metadata.common.album = 'Сингл';
+		}
+		if (!metadata.common.genre || metadata.common.genre === '') {
+			metadata.common.genre = 'Інший';
+		}
 		console.log(`METADATA OF NEW SONG: SUCCESS`)
 		const existingSong = await this.checkExistingSong(originalname)
 		if (existingSong) {
-			return res.json({ success: false, message: 'Song already exists' })
+		
+			return res.json({ success: false, message: 'Така пісня вже є' })
 		}
 		const song = await createSong(metadata, originalname, relativePath)
 		if (song) {
 			await saveSong(song)
 		}
 
-		res.json({ success: true, message: 'Success' })
+		res.json({ success: true, message: 'Пісня додана! Дякуємо за Вашу творчість!' })
 	} catch (error) {
 		console.error(`Error saving song metadata: ${error}`)
+		
+		
 		res.status(500).json({ success: false, message: 'Error saving song' })
 	}
 }
@@ -87,13 +101,16 @@ const saveSong = async song => {
 		throw new Error(`Error saving song: ${error.message}`)
 	}
 }
+
 const createSong = async (metadata, filename, filePath) => {
+		
+	
 	const song = new Song({
 		filename: filename,
 		title: metadata.common.title || filename.substring(0, filename.length - 4),
 		artist: metadata.common.artist,
 		album: metadata.common.album,
-		duration: (metadata.format.duration / 60.035).toFixed(2),
+		duration: metadata.format.duration,
 		filePath: filePath
 	})
 	return song

@@ -96,7 +96,16 @@
         <p class="AdminSongList-ID"><b><span>ID </span> <%= song._id %></b></p>
         <p class="AdminSongList-artist"><span>Виконавець </span><%= song.artist %></p>
         <p class="AdminSongList-album"><span>Альбом </span><%= song.album %></p>
-        <p class="AdminSongList-duration"><span>Тривалість </span><%= song.duration %> minutes</p>
+        <p class="genre"><span>Жанр </span><%= song.genre %> </p>
+                <p class="duration">
+                    <span>Тривалість</span>
+                    <% 
+                        const minutes = Math.floor(song.duration % 60);
+                        const seconds =((song.duration*60)%60).toFixed(0)
+                        const formattedDuration = `${minutes}:${seconds}`;
+                    %>
+                    <%= formattedDuration %> 
+                </p>
         <audio controls name="<%= song.title %>">
             <source src="<%= song.filePath %>" type="audio/mpeg" />
             Your browser does not support the audio tag.
@@ -143,7 +152,16 @@
                 <p class="playlist-song-title"><span>Назва </span><%= song.title %></p>
                 <p class="playlist-song-artist"><span>Виконавець </span><%= song.artist %></p>
                 <p class="playlist-song-album"><span>Альбом </span><%= song.album %></p>
-                <p class="playlist-song-duration"><span>Тривалість </span><%= song.duration %> minutes</p>
+                <p class="genre"><span>Жанр </span><%= song.genre %> </p>
+                <p class="duration">
+                    <span>Тривалість</span>
+                    <% 
+                        const minutes = Math.floor(song.duration % 60);
+                        const seconds =((song.duration*60)%60).toFixed(0)
+                        const formattedDuration = `${minutes}:${seconds}`;
+                    %>
+                    <%= formattedDuration %>
+                </p>
                 <audio controls name="<%= song.title %>">
                     <source src="<%= song.filePath %>" type="audio/mpeg" />
                     Your browser does not support the audio tag.
