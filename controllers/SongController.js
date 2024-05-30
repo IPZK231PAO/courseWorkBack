@@ -154,7 +154,8 @@ exports.updateSong = async (req, res) => {
         console.log('UPDATING SONG')
         const { id } = req.params
         const updates = req.body
-
+		console.log(req.params)
+		console.log(updates)
         const song = await Song.findByIdAndUpdate(id, updates, { new: true })
 
         if (!song) {

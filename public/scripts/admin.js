@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             openPopup('editSongPopup', null, songId);
         });
     });
-    document.querySelector('#createPlaylistButton').addEventListener('click', () => {
+    document.querySelector('.create-playlist').addEventListener('click', () => {
         openPopup('createPlaylistPopup');
     });
     const createPlaylistForm = document.querySelector('#createPlaylistForm');
@@ -182,6 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (formData.get('title')) data.title = formData.get('title');
         if (formData.get('artist')) data.artist = formData.get('artist');
         if (formData.get('album')) data.album = formData.get('album');
+        const genreString = formData.get('genre');
+        if (genreString) {
+            const genresArray = genreString.split(',').map(genre => genre.trim());
+            data.genre = genresArray;
+        }
 
         fetch(`/admin/songs/${songId}`, {
             method: 'PATCH',

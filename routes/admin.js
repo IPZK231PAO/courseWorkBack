@@ -7,10 +7,9 @@ const songController = require('../controllers/SongController');
 const adminMiddleware = require('../middlewares/adminAccessMiddleware');
 
 router.get('/admin', authMiddleware, pageController.admin);
-
-router.patch('/admin/users/:id', authMiddleware,adminMiddleware, userController.updateUser);
-router.delete('/admin/users/:id', authMiddleware,adminMiddleware, userController.deleteUser);
-router.patch('/admin/songs/:id', authMiddleware,adminMiddleware, songController.updateSong);
-router.delete('/admin/songs/:id', authMiddleware, adminMiddleware,songController.deleteSong);
+router.patch('/admin/users/:id', authMiddleware, adminMiddleware, userController.updateUser);
+router.delete('/admin/users/:id', authMiddleware, adminMiddleware, userController.deleteUser);
+router.patch('/admin/songs/:id', authMiddleware, adminMiddleware, songController.updateSong);
+router.delete('/admin/songs/:id', authMiddleware, adminMiddleware, songController.deleteSong);
 
 module.exports = router;

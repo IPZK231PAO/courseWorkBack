@@ -8,9 +8,7 @@ const songSchema = new mongoose.Schema({
 	genre: [{ type: String }],
 	duration: { type: Number, required: true, min: 0 },
 	filePath: String,
-	image: {
-		type: String
-	},
+	
 	createdAt: {
 		type: Date,
 		default: Date.now

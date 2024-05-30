@@ -55,13 +55,13 @@ exports.login = async (req, res) => {
 		const user = await User.findOne({ email: email })
 		console.log(user)
 		if (!user) {
-			res.status(401).send('Password or email does not correct!')
+			res.status(401).json({success:false, message:'Пароль або пошта невірні'})
 		} else {
 			console.log('else')
 			isDecryptedPassword = await bcrypt.compare(password, user.password)
 
 			if (!isDecryptedPassword) {
-				res.status(401).send('Password or email does not correct!')
+				res.status(401).json({success:false, message:'Пароль або пошта невірні'})
 			}
 
 			const token = authService.generateToken(
@@ -166,7 +166,7 @@ exports.getListened = async username => {
 		return { success: true, history: user.listened }
 	} catch (error) {
 		console.error('Error fetching listened: ' + error)
-		return { success: false, message: 'Getting listening history failed' }
+		return { success: false, message: 'Отримання історії невдале' }
 	}
 }
 
@@ -191,9 +191,12 @@ exports.updateUser=async (req,res)=>{
 		const userId=req.params.id;
 		const updatedData=req.body;
 		const updatedUser=await User.findByIdAndUpdate(userId,updatedData,{new:true})
-		res.status(200).json(updatedUser)
+		if(!updatedUser){
+			res.status(404).json({success:false, message:'Користувача не знайдено'})
+		}
+		res.status(200).json({success:true, message:'Дані користувача оновлено'})
 	}catch(error){
-		res.status(500).json({error:'Update failed'})
+		res.status(500).json({success:false, message:'Помилка в оновлені даних користувача'})
 	}
 }
 
@@ -202,8 +205,9 @@ exports.deleteUser=async (req,res)=>{
 		const userId=req.params.id
 		console.log('Deleting user: ', userId)
 		await User.findByIdAndDelete(userId)
-		res.status(200).json({message:'User deleted'})
+
+		res.status(200).json({success:true,message:'Користувач успішно видалений'})
 	}catch(error){
-		res.status(500).json({error:'Deleting failed'})
+		res.status(500).json({success:false,message:'Помилка видалення користувача'})
 	}
 }
