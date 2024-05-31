@@ -15,8 +15,8 @@
 			<span>Тривалість</span>
 			<% 
 			const minutes = Math.floor(song.duration % 60);
-			const seconds =((song.duration*60)%60).toFixed(0)
-			const formattedDuration = `${minutes}:${seconds}`;
+			const seconds =Math.floor((song.duration*60)%60).toFixed(0)
+			const formattedDuration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 		%>
 		<%= formattedDuration %>
 		</p>

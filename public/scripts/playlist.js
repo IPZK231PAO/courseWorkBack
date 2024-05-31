@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedSongs = Array.from(formData.getAll('songs'))
         console.log(title, selectedSongs)
         fetch(`/playlists/${playlistId}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
        const songId = event.target.closest('.modal').dataset.songId
         console.log(playlistId,songId)
         fetch(`/playlists/removesong`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },

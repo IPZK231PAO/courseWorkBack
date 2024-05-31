@@ -10,6 +10,7 @@
             </select>
             <button type="submit">Add Selected Songs</button>
         </form>
+        <div id="message"></div>
     </div>
 </div>
 <div id="createPlaylistPopup" class="modal">
@@ -25,6 +26,7 @@
             </select>
             <button type="submit">Створити</button>
         </form>
+        <div id="message"></div>
     </div>
 </div>
 <div id="removeSongPopup" class="modal">
@@ -35,6 +37,7 @@
             <p>Are you sure you want to remove this song?</p>
             <button type="submit">Remove Song</button>
         </form>
+        <div id="message"></div>
     </div>
 </div>
 
@@ -52,6 +55,7 @@
             </select>
             <button type="submit">Save Changes</button>
         </form>
+        <div id="message"></div>
     </div>
 </div>
 
@@ -94,7 +98,7 @@
     <% }); %>
 </ul>
 <button id="createPlaylistButton">Створити плейліст</button>
-<div id="message"></div>
+
 <script>
       function closePopup(popupId) {
         document.getElementById(popupId).style.display = 'none';

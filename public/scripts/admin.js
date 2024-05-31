@@ -60,92 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
             openPopup('editSongPopup', null, songId);
         });
     });
-    document.querySelector('.create-playlist').addEventListener('click', () => {
-        openPopup('createPlaylistPopup');
-    });
-    const createPlaylistForm = document.querySelector('#createPlaylistForm');
-    createPlaylistForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const messageDiv = document.querySelector('#message');
-        const formData = new FormData(createPlaylistForm);
-        const title = formData.get('title');
-        const id=event.target.dataset.id
-        console.log(id)
-        const selectedSongs = Array.from(formData.getAll('songs'));
     
-        fetch(`/playlists`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id,
-                title: title,
-                songs: selectedSongs
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                messageDiv.textContent = data.message;
-                location.reload();
-            } else {
-                messageDiv.textContent = data.message;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
     
-    const editPlaylistForm = document.querySelector('#editPlaylistForm');
-    editPlaylistForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const playlistId = event.target.closest('.modal').dataset.playlistId;
-        const formData = new FormData(editPlaylistForm);
-        const data = {};
-
-        if (formData.get('title')) data.title = formData.get('title');
-        if (formData.getAll('songs').length > 0) data.songs = formData.getAll('songs');
-
-        fetch(`/playlists/${playlistId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            messageDiv.textContent = data.message;
-            messageDiv.style.color = data.success ? 'green' : 'brown';
-            if (data.success) location.reload();
-        })
-        .catch(error => console.error('Error:', error));
-    });
-
-    const removeSongForm = document.querySelector('#removeSongForm');
-    removeSongForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const playlistId = event.target.closest('.modal').dataset.playlistId;
-        const songId = event.target.closest('.modal').dataset.songId;
-
-        fetch(`/playlists/removesong`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ playlistId, songId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            messageDiv.textContent = data.message;
-            messageDiv.style.color = data.success ? 'green' : 'brown';
-            if (data.success) location.reload();
-        })
-        .catch(error => console.error('Error:', error));
-    });
-
+    
     const editUserForm = document.querySelector('#editUserForm');
     editUserForm.addEventListener('submit', (event) => {
         event.preventDefault();
