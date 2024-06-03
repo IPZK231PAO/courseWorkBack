@@ -4,8 +4,8 @@
 	<% history.forEach(title => { %> <% songs.forEach(song => { %> <% if (title
 	=== song.title) { %>
 	<li class="song-item">
-		<h3 class="title">Title: <%= song.title %></h3>
-		<p class="artist">Artist: <%= song.artist %></p>
+		<p class="title"><span>Назва </span> <%= song.title %></p>
+		<p class="artist"><span>Виконавець </span><%= song.artist %></p>
 		
 		<audio controls name="<%= song.title %>">
 			<source src="<%= song.filePath %>" type="audio/mpeg" />

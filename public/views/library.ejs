@@ -21,7 +21,7 @@
 		<%= formattedDuration %>
 		</p>
 		
-		<audio controls name="<%= song.title %>">
+		<audio loop preload="metadata" controls name="<%= song.title %>" data-song-title="<%= song.title %>" data-username="<%= username %>">
 			<source src="<%= song.filePath %>" type="audio/mpeg" />
 			Your browser does not support the audio tag.
 		</audio>
